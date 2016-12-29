@@ -1,18 +1,12 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(Splinter)
 
-
-find_package(ECM 0.0.11 REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
-
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-include(KDECompilerSettings)
 include(FeatureSummary)
 
 find_package(Qt5 REQUIRED COMPONENTS Qml Quick)
 
 set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC ON)
 
 set(tutorial_SRCS
   main.cpp

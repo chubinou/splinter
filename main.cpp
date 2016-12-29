@@ -1,12 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <splitmodel.h>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QQmlDebuggingEnabler>
 #include "osd.h"
+#include "splitmodel.h"
 #include "runner.h"
 #include "server.h"
 

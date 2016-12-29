@@ -1,4 +1,4 @@
-#include <splitmodellist.h>
+#include "splitmodellist.h"
 
 SplitModelList::SplitModelList(QList<SplitModel*> list, QObject* parent):
 	QAbstractListModel(parent),

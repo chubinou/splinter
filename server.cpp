@@ -1,6 +1,6 @@
-#include <server.h>
 #include <QRegularExpression>
 #include <QMetaEnum>
+#include "server.h"
 
 Server::Server(Runner& runner, QObject* parent):
 	QTcpServer(parent),
