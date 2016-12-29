@@ -3,13 +3,13 @@
 #include <QDebug>
 #include "utils.h"
 
-Runner::Runner(QList<SplitModel*> splits):
+Runner::Runner(QString filename):
 	QObject(),
-	m_splits(splits),
 	m_timerPhase(TimerPhase::NotRunning),
-	m_delta(0)
+	m_delta(0),
+	m_best(INT64_MAX)
 {
-	m_timer.start();
+	load(filename);
 }
 
 QString Runner::elapsed() const
@@ -64,6 +64,9 @@ void Runner::split()
 	m_currentSplit++;
 	if (m_currentSplit == m_splits.end()) {
 		m_delta = elapsed;
+		if (m_delta < m_best) {
+			m_best = m_delta;
+		}
 		m_timerPhase = TimerPhase::Ended;
 		return;
 	}
@@ -99,6 +102,37 @@ void Runner::pausegametime()
 void Runner::unpausegametime()
 {
 
+}
+
+QString Runner::title()
+{
+	return m_title;
+}
+
+QString Runner::category()
+{
+	return m_category;
+}
+
+void Runner::save()
+{
+	m_splitparser.setBest(m_best);
+	m_splitparser.setSplits(m_splits);
+	m_splitparser.save(m_filename);
+}
+
+void Runner::load(QString filename)
+{
+	m_filename = filename;
+	m_splitparser.loadJsonObjectFromFile(m_filename);
+	m_splits = m_splitparser.splits();
+	m_title = m_splitparser.gameName();
+	m_best = m_splitparser.best();
+	m_category = m_splitparser.categoryName();
+	reset();
+	emit titleChanged();
+	emit categoryChanged();
+	emit splitsListChanged();
 }
 
 QList<QObject*> Runner::splitsList()

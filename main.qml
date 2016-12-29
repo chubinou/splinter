@@ -1,12 +1,15 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.0
 import org.chub 1.0
 
 OSD {
-	width: 300;
+	id: app
+	width: 300
 	height: 400
-	x: 0;
-	y: 0; //  Screen.height - height
+	x: 0
+	y: Screen.height - height
 
 
 	Rectangle {
@@ -15,6 +18,11 @@ OSD {
 		anchors.fill: parent
 		opacity: 0.8
 
+		//contextual menu
+		MouseMenu {
+		}
+
+		//Header
 		Rectangle {
 			id: titleHeader
 			width: parent.width
@@ -27,7 +35,7 @@ OSD {
 				Text {
 					id: title
 					color: "#ffffff"
-					text: game
+					text: runner.title
 					font.bold: true
 					horizontalAlignment: Text.AlignHCenter
 					font.pixelSize: 20
@@ -36,7 +44,7 @@ OSD {
 				Text {
 					id: cat
 					color: "#ffffff"
-					text: category
+					text: runner.category
 					horizontalAlignment: Text.AlignHCenter
 					font.pixelSize: 15
 					width: parent.width
@@ -52,16 +60,14 @@ OSD {
 				bottom: timeFooter.top
 				margins: 10
 			}
-			model: splits
-			move: Transition {
-					NumberAnimation { properties: "contentX,contentY"; duration: 1000 }
-				}
 
+			model: splits
 
 			delegate: Section {
 			}
 		}
 
+		//footer
 		Rectangle {
 			id: timeFooter
 			anchors.bottom: parent.bottom

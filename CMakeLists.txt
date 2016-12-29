@@ -14,12 +14,14 @@ set(tutorial_SRCS
   osd.cpp
   splitmodel.h
   splitmodel.cpp
+  splitmodellist.h
+  splitmodellist.cpp
+  splitparser.h
+  splitparser.cpp
   runner.h
   runner.cpp
   server.h
   server.cpp
-  splitmodellist.h
-  splitmodellist.cpp
   utils.h
   utils.cpp
   qml.qrc

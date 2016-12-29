@@ -17,7 +17,7 @@ public:
 	};
 	Q_ENUM(SplitState)
 
-	Q_PROPERTY(QString title MEMBER m_title NOTIFY titleChanged)
+	Q_PROPERTY(QString title READ title NOTIFY titleChanged)
 	Q_PROPERTY(QString bestSegment READ bestSegment NOTIFY bestSegmentChanged)
 	Q_PROPERTY(QString bestCumul READ bestCumul NOTIFY bestCumulChanged)
 	Q_PROPERTY(QString current READ current NOTIFY currentChanged)
@@ -29,11 +29,15 @@ public:
 	SplitModel(QString title, qint64 best_ms, qint64 bestCumul_ms);
 
 public:
-	QString bestSegment();
-	QString bestCumul();
-	QString current();
-	QString currentDiffBest();
-	SplitState state();
+	QString title() const;
+	QString bestSegment() const;
+	qint64 bestSegment_ms() const;
+	QString bestCumul() const;
+	qint64 bestCumul_ms() const;
+	QString current() const;
+	qint64 current_ms() const;
+	QString currentDiffBest() const;
+	SplitState state() const;
 
 	void setState(SplitState state);
 	void splitStart(qint64 time_ms);
@@ -53,6 +57,7 @@ private:
 	qint64 m_bestSegment;
 	qint64 m_bestCumul;
 	qint64 m_current;
+	qint64 m_currentDiff;
 	SplitState m_splitState;
 };
 

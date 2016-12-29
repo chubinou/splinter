@@ -4,11 +4,13 @@
 #include <QObject>
 #include <QElapsedTimer>
 #include "splitmodel.h"
-#include "splitmodellist.h"
+#include "splitparser.h"
 
 class Runner : public QObject
 {
 	Q_OBJECT
+	Q_PROPERTY(QString title READ title NOTIFY titleChanged)
+	Q_PROPERTY(QString category READ category NOTIFY categoryChanged)
 	Q_PROPERTY(QList<QObject*> splitsList READ splitsList NOTIFY splitsListChanged)
 
 public:
@@ -22,7 +24,7 @@ public:
 	Q_ENUM(TimerPhase)
 
 public:
-	Runner(QList<SplitModel*> splits);
+	Runner(QString filename);
 
 public slots:
 	QString elapsed() const;
@@ -41,16 +43,30 @@ public slots:
 	void pausegametime();
 	void unpausegametime();
 
+	QString title();
+	QString category();
+
+	void save();
+	void load(QString filename);
+
 	QList<QObject*> splitsList();
 
 signals:
 	void splitsListChanged();
+	void titleChanged();
+	void categoryChanged();
 
 private:
+	QString m_filename;
+	QString m_title;
+	QString m_category;
+
+	SplitParser m_splitparser;
 	QList<SplitModel*> m_splits;
 	QList<SplitModel*>::iterator m_currentSplit;
 	TimerPhase m_timerPhase;
 	qint64 m_delta;
+	qint64 m_best;
 	QElapsedTimer m_timer;
 };
 
