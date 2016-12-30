@@ -80,7 +80,7 @@ void SplitModel::splitDone(qint64 time_ms)
 {
 	m_current = time_ms - m_splitStart;
 	m_currentDiff = m_current - m_bestSegment;
-	if (m_currentDiff) {
+	if (m_currentDiff < 0) {
 		m_bestSegment = m_current;
 		m_splitState = SplitState::SEGMENT_DONE_BETTER;
 	} else {

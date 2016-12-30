@@ -1,10 +1,8 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonObject>
 #include <QQmlDebuggingEnabler>
+#include <QCommandLineParser>
 #include "osd.h"
 #include "splitmodel.h"
 #include "runner.h"
@@ -12,26 +10,36 @@
 
 int main(int argc, char *argv[])
 {
-	QQmlDebuggingEnabler enabler;
+	QApplication app(argc, argv);
+	QCoreApplication::setApplicationName("splinter");
+	QCoreApplication::setApplicationVersion("1.0");
 
-	QGuiApplication app(argc, argv);
+	QCommandLineParser parser;
+	parser.setApplicationDescription("linux game splitter");
+	parser.addHelpOption();
+	parser.addVersionOption();
+
+	QCommandLineOption configOption(
+		QStringList() << "c" << "config",
+		"load the config file <config>", "config");
+
+	parser.addOption(configOption);
+	parser.process(app);
+
+	QString splitFile = parser.value(configOption);
+
 	qmlRegisterType<OSD>("org.chub", 1, 0, "OSD");
 	qmlRegisterType<SplitModel>("org.chub", 1, 0, "SplitModel");
 
 	QQmlApplicationEngine engine;
 	QQmlContext *ctxt = engine.rootContext();
 
-
-	Runner runner("splits.json");
-	QList<QObject*> splitmodel = runner.splitsList();
+	Runner runner(splitFile);
 
 	Server server(runner);
 	server.listen(QHostAddress::Any, 16834);
 
 	ctxt->setContextProperty("runner", &runner);
-	ctxt->setContextProperty("game", QVariant::fromValue(runner.title()));
-	ctxt->setContextProperty("category", QVariant::fromValue(runner.category()));
-	ctxt->setContextProperty("splits", QVariant::fromValue(splitmodel));
 
 	engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

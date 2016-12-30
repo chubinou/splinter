@@ -61,7 +61,7 @@ OSD {
 				margins: 10
 			}
 
-			model: splits
+			model: runner.splitsList
 
 			delegate: Section {
 			}

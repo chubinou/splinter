@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QElapsedTimer>
+#include <QQmlListProperty>
 #include "splitmodel.h"
 #include "splitparser.h"
 
@@ -11,7 +12,7 @@ class Runner : public QObject
 	Q_OBJECT
 	Q_PROPERTY(QString title READ title NOTIFY titleChanged)
 	Q_PROPERTY(QString category READ category NOTIFY categoryChanged)
-	Q_PROPERTY(QList<QObject*> splitsList READ splitsList NOTIFY splitsListChanged)
+	Q_PROPERTY(QQmlListProperty<SplitModel> splitsList READ splitsList NOTIFY splitsListChanged)
 
 public:
 	enum TimerPhase
@@ -48,8 +49,12 @@ public slots:
 
 	void save();
 	void load(QString filename);
+	void load(QUrl url);
 
-	QList<QObject*> splitsList();
+	QQmlListProperty<SplitModel> splitsList();
+private:
+	static int countSplitModelList(QQmlListProperty<SplitModel>* property);
+	static SplitModel* atSplitModelList(QQmlListProperty<SplitModel>* property, int index);
 
 signals:
 	void splitsListChanged();

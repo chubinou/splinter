@@ -1,5 +1,6 @@
 #include "runner.h"
 #include <QTime>
+#include <QUrl>
 #include <QDebug>
 #include "utils.h"
 
@@ -135,11 +136,29 @@ void Runner::load(QString filename)
 	emit splitsListChanged();
 }
 
-QList<QObject*> Runner::splitsList()
+void Runner::load(QUrl url)
 {
-	QList<QObject*>	list;
-	std::copy(m_splits.begin(), m_splits.end(), std::back_inserter(list));
-	return list;
+	QString filePath = url.toLocalFile();
+	load(filePath);
+}
+
+
+int Runner::countSplitModelList(QQmlListProperty<SplitModel>* property)
+{
+	Runner *m = qobject_cast<Runner *>(property->object);
+	return m->m_splits.size();
+
+}
+
+SplitModel* Runner::atSplitModelList(QQmlListProperty<SplitModel>* property, int index)
+{
+	Runner *m = qobject_cast<Runner *>(property->object);
+	return m->m_splits.at(index);
+}
+
+QQmlListProperty<SplitModel> Runner::splitsList()
+{
+	return QQmlListProperty<SplitModel>(this, 0, &Runner::countSplitModelList, &Runner::atSplitModelList);
 }
 
 void Runner::pause()

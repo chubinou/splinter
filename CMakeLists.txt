@@ -3,12 +3,12 @@ project(Splinter)
 
 include(FeatureSummary)
 
-find_package(Qt5 REQUIRED COMPONENTS Qml Quick)
+find_package(Qt5 REQUIRED COMPONENTS Qml Quick Widgets)
 
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 
-set(tutorial_SRCS
+set(splinter_SRCS
   main.cpp
   osd.h
   osd.cpp
@@ -24,17 +24,19 @@ set(tutorial_SRCS
   server.cpp
   utils.h
   utils.cpp
-  qml.qrc
   )
 
 set(QML_SRC
   main.qml
+  Section.qml
+  MouseMenu.qml
   )
 
-add_executable(tutorial ${tutorial_SRCS})
+qt5_add_resources(RESOURCES qml.qrc)
+add_executable(splinter ${splinter_SRCS} ${RESOURCES})
 
 target_link_libraries(
-  tutorial
+  splinter
   PRIVATE
-  Qt5::Qml Qt5::Quick
+  Qt5::Qml Qt5::Quick Qt5::Widgets
   )
